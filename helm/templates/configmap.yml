@@ -17,5 +17,9 @@ metadata:
 data:
 {{- range $k,$v := .Values.quota }}
   {{ $k }}.json: |
-    {{ $v | toJson }}
+    {{- if $.Values.extraQuota }}
+      {{ merge $v (index $.Values.extraQuota $k) | toJson }}
+    {{- else }}
+      {{ $v | toJson }}
+    {{- end }}
 {{- end }}
